@@ -32,6 +32,21 @@ server:
 
 ```
 
+### Run
+
+#### On localhost
+```shell
+./gradlew build
+java -jar build/libs/turbine-service-0.1.0.jar
+```
+
+### With Docker
+```shell
+./gradlew build
+docker build --tag="turbinestream" .
+docker run -d -p 8990:8990 turbinestream
+```
+
 ### Hystrix Dashboard
 Access the Hystrix Dashboard, **Add Stream** `http://localhost:8990/turbine.stream?cluster=east-1`
 ![Turbine](turbine.png)
