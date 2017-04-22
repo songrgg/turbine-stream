@@ -1,5 +1,5 @@
 ### Turbine Stream
-Collect [Hystrix](github.com/netflix/Hystrix) from multiple clients and merge them into one stream.
+[Turbine](https://github.com/netflix/Turbine) is a Netflix Project collecting [Hystrix](https://github.com/netflix/Hystrix) from multiple clients and merge them into one stream.
 
 ### Support Service Discovery
 Clients can register their Hystrix stream to the Service Discovery like **Consul**, **Etcd**, **Zookeeper**, Turbine will load hystrix streams from it and merge them into one.
