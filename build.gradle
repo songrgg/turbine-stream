@@ -1,0 +1,114 @@
+group 'me.songrgg'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE'
+        classpath 'org.springframework:springloaded:1.2.6.RELEASE'
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'com.bmuschko.nexus'
+apply plugin: 'org.springframework.boot'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+    jpametamodel
+}
+
+dependencies {
+    testCompile("junit:junit:4.12")
+//    compile 'org.springframework.cloud:spring-cloud-starter-turbine-stream:1.2.3.RELEASE'
+//    compile 'org.springframework.cloud:spring-cloud-starter-stream-rabbit:1.1.1.RELEASE'
+//    compile 'org.springframework.integration:spring-integration-amqp:4.3.5.RELEASE'
+    compile 'org.springframework.cloud:spring-cloud-netflix-turbine:1.2.3.RELEASE'
+    compile 'org.springframework.cloud:spring-cloud-starter-consul-discovery:1.1.2.RELEASE'
+}
+
+sourceSets {
+    intTest
+    generated.java.srcDirs=['src/main/generated']
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources { srcDir 'src/main/resources' }
+    }
+    test {
+        java {
+            srcDirs = []
+        }
+        resources { srcDir 'src/test/resources' }
+    }
+}
+
+compileJava.source sourceSets.main.java
+compileJava.dependsOn(processResources)
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0'
+}
+
+jar {
+    baseName = 'turbine-service'
+    version =  '0.1.0'
+}
+
+bootRun {
+    systemProperties System.properties
+    addResources = true // 静态文件自动更新
+}
+
+modifyPom {
+    project {
+        name 'Turbine Project'
+        description 'A project of Hystrix aggregator.'
+        url 'https://github.com/songrgg/turbine-stream'
+        inceptionYear '2016'
+
+        licenses {
+            license {
+                name 'BSD (3-Clause) License'
+                url 'https://opensource.org/licenses/BSD-3-Clause'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'songrgg'
+                name 'Songrong Jiang'
+                email 'songrgg0.0@gmail.com'
+            }
+        }
+    }
+}
+
+extraArchive {
+    sources = true
+    tests = false
+    javadoc = false
+}
+
+idea {
+    module {
+        // 设置输出文件目录,开发环境中更新后可以动态生成class文件,不用重启
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}

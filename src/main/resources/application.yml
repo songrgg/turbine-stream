@@ -1,0 +1,13 @@
+spring.application.name: turbine
+applications: turbine-consul
+
+turbine:
+  aggregator:
+    clusterConfig: east-1
+  appConfig: east-1
+
+spring:
+  cloud:
+    consul:
+      host: consul
+      port: 8500
